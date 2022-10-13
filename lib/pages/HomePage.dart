@@ -1,6 +1,4 @@
-
 // ignore_for_file: file_names
-import 'dart:convert';
 import 'package:agrumino/models/batt.dart';
 import 'package:agrumino/models/illuminance.dart';
 import 'package:agrumino/models/soil.dart';
@@ -8,7 +6,6 @@ import 'package:agrumino/models/temp.dart';
 import 'package:agrumino/network/get.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -26,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    
+
     _tooltipBehavior = TooltipBehavior(enable: true);
   }
 
@@ -65,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                 List<Battery> batt = snapshot.data.batt;
 
                 return TabBarView(children: [
-                  general(tmp,luce,soil,batt),
+                  general(tmp, luce, soil, batt),
                   data(tmp, "Temperatura"),
                   data(soil, "Soils Moisture"),
                   data(luce, "Illuminance"),
@@ -80,61 +77,46 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget general(tmp,luce,soil,batt){
-
-  
-
-
-
-
+Widget general(tmp, luce, soil, batt) {
   return Column(
     children: [
-      mycard(tmp,"temperatura"),
-      mycard(luce,"luce"),
-      mycard(soil,"umidità"),
-      mycard(batt,"carica"),
+      mycard(tmp, "temperatura"),
+      mycard(luce, "luce"),
+      mycard(soil, "umidità"),
+      mycard(batt, "carica"),
     ],
   );
-
-
-
-
-
-
-  
 }
 
-Widget mycard(value,nome){
-  final  listamedia = [];
- double sum = 0;
+Widget mycard(value, nome) {
+  final listamedia = [];
+  double sum = 0;
   for (int check = 0; check <= 5; check++) {
-  
-  double somma = double.parse(value[check].value); 
-  listamedia.add(somma); 
-  
-  //print(tmp[check].value + check.toString());
- // print(listamedia);
-}
- for (var i = 0; i < listamedia.length; i++) {
+    double somma = double.parse(value[check].value);
+    listamedia.add(somma);
+
+    //print(tmp[check].value + check.toString());
+    // print(listamedia);
+  }
+  for (var i = 0; i < listamedia.length; i++) {
     sum += listamedia[i];
   }
-print(sum/listamedia.length);
- double media = sum/listamedia.length;
+//print(sum/listamedia.length);
+  double media = sum / listamedia.length;
   return Card(
-        child: Column(
-          children: [
-             Text("Ultima rilevazione $nome"),
-            Text(value.first.value),
-            const Text("Media ultima ora"),
-            Text(media.toString())
-          ],
-        ),
-      );
+    child: Column(
+      children: [
+        Text("Ultima rilevazione $nome"),
+        Text(value.first.value),
+        const Text("Media ultima ora"),
+        Text(media.toString())
+      ],
+    ),
+  );
 }
 
 Widget data(data, value) {
   return ListView.builder(
-      
       itemCount: data.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
@@ -142,24 +124,18 @@ Widget data(data, value) {
             child: Card(
               child: Column(
                 children: [
-                 const Text("Data e ora"),
+                  const Text("Data e ora"),
                   Text(
                     DateTime.fromMicrosecondsSinceEpoch(data[index].ts * 1000)
                         .toString(),
                   ),
-                 const Text("Value"),
+                  const Text("Value"),
                   Text(data[index].value.toString()),
                 ],
               ),
             ));
       });
 }
-
-
-
-
-
-
 
 Widget titolo(controller) {
   if (controller == 0) {
