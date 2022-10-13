@@ -37,6 +37,7 @@ dependencies:
   http: ^0.13.5
   thingsboard_client: ^1.0.3
   json_serializable: ^6.5.1
+  syncfusion_flutter_charts: ^20.3.49
 
 dev_dependencies:
   flutter_test:
