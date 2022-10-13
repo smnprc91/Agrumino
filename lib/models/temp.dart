@@ -1,6 +1,6 @@
 class Temperature {
-  final int? ts;
-  final String? value;
+  final int ts;
+  final String value;
 
   Temperature({
     required this.ts,
