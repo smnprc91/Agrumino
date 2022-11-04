@@ -1,14 +1,10 @@
 // ignore_for_file: file_names
 import 'dart:developer';
-
 import 'package:agrumino/models/batt.dart';
 import 'package:agrumino/models/illuminance.dart';
 import 'package:agrumino/models/soil.dart';
 import 'package:agrumino/models/temp.dart';
-
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../network/get.dart';
 
 class DataScreen extends StatefulWidget {
@@ -23,8 +19,7 @@ final String token;
 
   var controller = 0;
 String mytitle = "Agrumino";
-// ignore: unused_element
-late TooltipBehavior _tooltipBehavior;
+
 
 class _DataScreenState extends State<DataScreen> {
   @override
@@ -32,7 +27,7 @@ class _DataScreenState extends State<DataScreen> {
    // print(widget.token);
     super.initState();
 
-    _tooltipBehavior = TooltipBehavior(enable: true);
+
   }
 
   @override
