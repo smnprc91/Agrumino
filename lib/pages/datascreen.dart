@@ -13,7 +13,7 @@ import '../network/get.dart';
 
 class DataScreen extends StatefulWidget {
  
-DataScreen({Key? key,  required this.token}) : super(key: key);
+const DataScreen({Key? key,  required this.token}) : super(key: key);
 final String token;
 
   @override
@@ -29,7 +29,7 @@ late TooltipBehavior _tooltipBehavior;
 class _DataScreenState extends State<DataScreen> {
   @override
   void initState() {
-    print(widget.token);
+   // print(widget.token);
     super.initState();
 
     _tooltipBehavior = TooltipBehavior(enable: true);

@@ -1,4 +1,4 @@
-#Thu Nov 03 21:46:04 CET 2022
+#Fri Nov 04 10:37:18 CET 2022
 base.0=D\:\\Programmazione Flutter\\Agrumino\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
