@@ -1,5 +1,4 @@
 // ignore_for_file: file_names
-import 'dart:developer';
 import 'package:agrumino/models/batt.dart';
 import 'package:agrumino/models/illuminance.dart';
 import 'package:agrumino/models/soil.dart';
@@ -8,27 +7,18 @@ import 'package:flutter/material.dart';
 import '../network/get.dart';
 
 class DataScreen extends StatefulWidget {
- 
-const DataScreen({Key? key,  required this.token}) : super(key: key);
-final String token;
+  const DataScreen({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   State<DataScreen> createState() => _DataScreenState();
 }
 
-
-  var controller = 0;
+var controller = 0;
 String mytitle = "Agrumino";
 
-
 class _DataScreenState extends State<DataScreen> {
-  @override
-  void initState() {
-   // print(widget.token);
-    super.initState();
-
-
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +27,9 @@ class _DataScreenState extends State<DataScreen> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
+          leading:  IconButton(icon: Icon(Icons.arrow_left), onPressed: () { 
+           Navigator.pop(context);
+           },),
           title: titolo(controller),
           bottom: TabBar(
             onTap: (index) {
@@ -57,7 +50,6 @@ class _DataScreenState extends State<DataScreen> {
             future: ThingsBoard.get(widget.token),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                inspect(snapshot.data);
                 List<Temperature> tmp = snapshot.data.temperatures;
                 List<Illuminance> luce = snapshot.data.illuminances;
                 List<Soil> soil = snapshot.data.soils;

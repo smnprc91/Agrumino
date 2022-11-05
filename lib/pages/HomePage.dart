@@ -1,4 +1,6 @@
 import 'package:agrumino/bloc/bloc.dart';
+import 'package:agrumino/pages/datascreen.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,19 +11,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? username;
+  String? password;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("My Agrumino"),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [firstcolumnobj(context), secondcolumnobj(context)],
+    return Stack(children: <Widget>[
+      Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+            image: const AssetImage("assets/leaf.png"),
+            fit: BoxFit.scaleDown,
+            colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(0.4), BlendMode.dstATop),
           ),
-        ));
+        ),
+      ),
+      Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text("My Agrumino"),
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  firstcolumnobj(context),
+                  secondcolumnobj(context, username, password)
+                ],
+              ),
+            ),
+          )),
+    ]);
   }
 }
 
@@ -38,14 +61,14 @@ firstcolumnobj(context) {
         height: MediaQuery.of(context).size.height * 0.05,
         width: MediaQuery.of(context).size.width * 0.6,
         child: const Center(
-            child: Text(
+            child: AutoSizeText(
           "Inserisci i dati per il login",
           style: TextStyle(color: Colors.green, fontSize: 20),
         ))),
   );
 }
 
-secondcolumnobj(context) {
+secondcolumnobj(context, username, password) {
   Mybloc bloc = Mybloc();
   return Center(
     child: Container(
@@ -54,13 +77,19 @@ secondcolumnobj(context) {
       width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: [
-          const TextField(
-            decoration:
-                InputDecoration(labelText: 'Username', hintText: "Username"),
+          TextField(
+            onChanged: (newusername) {
+              username = newusername;
+            },
+            decoration: const InputDecoration(
+                labelText: 'Username', hintText: "Username"),
           ),
-          const TextField(
-            decoration:
-                InputDecoration(labelText: 'Password', hintText: "Password"),
+          TextField(
+            onChanged: (newpassword) {
+              password = newpassword;
+            },
+            decoration: const InputDecoration(
+                labelText: 'Password', hintText: "Password"),
           ),
           Padding(
             padding: EdgeInsets.only(
@@ -69,17 +98,45 @@ secondcolumnobj(context) {
             child: TextButton(
               style: TextButton.styleFrom(backgroundColor: Colors.green),
               onPressed: () {
-                /* int i = 1;
-                if (i == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DataScreen(
-                              token: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzbW5wcmM5MUBnbWFpbC5jb20iLCJ1c2VySWQiOiI4MmI2OTk4MC0zNGM1LTExZWQtODljMi03YjhlOWMzM2ZkNzMiLCJzY29wZXMiOlsiVEVOQU5UX0FETUlOIl0sImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNjY3NTg1NDQ4LCJleHAiOjE2NjkzODU0NDgsImZpcnN0TmFtZSI6IlNpbW9uZSIsImxhc3ROYW1lIjoiUG9yY3UiLCJlbmFibGVkIjp0cnVlLCJwcml2YWN5UG9saWN5QWNjZXB0ZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI4MTYxOTBkMC0zNGM1LTExZWQtODljMi03YjhlOWMzM2ZkNzMiLCJjdXN0b21lcklkIjoiMTM4MTQwMDAtMWRkMi0xMWIyLTgwODAtODA4MDgwODA4MDgwIn0.LmOPD-JXI4cU57u1S8oWHVkv_qwS0CfrjjsP9-1VywZ85hhtbz1lSOt9RVMozBpI1fC5avUJZ5SmxRTAFYlZww",
-                            )),
-                  );
-                } */
-                bloc.sendpost();
+                bloc.sendpost(username, password);
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    title: Center(child:  Text("Caricamento")),
+                    actions: <Widget>[
+                      StreamBuilder(
+                        stream: bloc.streamtoken,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            String token = snapshot.data;
+
+                            Future.delayed(const Duration(milliseconds: 100),
+                                () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DataScreen(
+                                          token: token,
+                                        )),
+                              );
+                            });
+
+                            return const Center(
+                              child: Text("Login effetuato con successo"),
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                );
               },
               child: const Text(
                 'Invia',
