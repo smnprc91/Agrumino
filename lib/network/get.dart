@@ -18,6 +18,7 @@ class ThingsBoard {
       },
     );
     if (response.statusCode == 200) {
+      print(response.body);
       return Everything.fromjson(jsonDecode(response.body));
     } else {
       throw Exception('can t load un cazzo di nulla zio pera');

@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'package:agrumino/models/batt.dart';
+import 'package:agrumino/models/everything.dart';
 import 'package:agrumino/models/illuminance.dart';
 import 'package:agrumino/models/soil.dart';
 import 'package:agrumino/models/temp.dart';
@@ -18,8 +19,6 @@ var controller = 0;
 String mytitle = "Agrumino";
 
 class _DataScreenState extends State<DataScreen> {
-  
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -27,9 +26,12 @@ class _DataScreenState extends State<DataScreen> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          leading:  IconButton(icon: Icon(Icons.arrow_left), onPressed: () { 
-           Navigator.pop(context);
-           },),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_left),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: titolo(controller),
           bottom: TabBar(
             onTap: (index) {
@@ -50,17 +52,15 @@ class _DataScreenState extends State<DataScreen> {
             future: ThingsBoard.get(widget.token),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                List<Temperature> tmp = snapshot.data.temperatures;
-                List<Illuminance> luce = snapshot.data.illuminances;
-                List<Soil> soil = snapshot.data.soils;
-                List<Battery> batt = snapshot.data.batt;
+                Everything data = snapshot.data;
 
                 return TabBarView(children: [
-                  general(tmp, luce, soil, batt),
-                  data(tmp, "Temperatura"),
-                  data(soil, "Soils Moisture"),
-                  data(luce, "Illuminance"),
-                  data(batt, "Battery")
+                  general(data.temperatures, data.illuminances, data.soils,
+                      data.batt),
+                  datalog(data.temperatures, "Temperatura"),
+                  datalog(data.illuminances, "Soils Moisture"),
+                  datalog(data.soils, "Illuminance"),
+                  datalog(data.batt, "Battery")
                 ]);
               } else {
                 return const Center(child: CircularProgressIndicator());
@@ -109,7 +109,7 @@ Widget mycard(value, nome) {
   );
 }
 
-Widget data(data, value) {
+Widget datalog(data, value) {
   return ListView.builder(
       itemCount: data.length,
       itemBuilder: (BuildContext context, int index) {
