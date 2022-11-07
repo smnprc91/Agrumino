@@ -1,15 +1,12 @@
 // ignore_for_file: file_names
-import 'package:agrumino/models/batt.dart';
 import 'package:agrumino/models/everything.dart';
-import 'package:agrumino/models/illuminance.dart';
-import 'package:agrumino/models/soil.dart';
-import 'package:agrumino/models/temp.dart';
 import 'package:flutter/material.dart';
 import '../network/get.dart';
 
 class DataScreen extends StatefulWidget {
-  const DataScreen({Key? key, required this.token}) : super(key: key);
+  const DataScreen({Key? key, required this.token,required this.id}) : super(key: key);
   final String token;
+  final String id;
 
   @override
   State<DataScreen> createState() => _DataScreenState();
@@ -27,7 +24,7 @@ class _DataScreenState extends State<DataScreen> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_left),
+            icon: const Icon(Icons.arrow_left),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -49,7 +46,7 @@ class _DataScreenState extends State<DataScreen> {
           ),
         ),
         body: FutureBuilder(
-            future: ThingsBoard.get(widget.token),
+            future: ThingsBoard.get(widget.token,widget.id),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 Everything data = snapshot.data;

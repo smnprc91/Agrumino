@@ -1,5 +1,5 @@
 import 'package:agrumino/bloc/bloc.dart';
-import 'package:agrumino/pages/datascreen.dart';
+import 'package:agrumino/pages/deviceList.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? username;
   String? password;
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
@@ -104,7 +105,7 @@ secondcolumnobj(context, username, password) {
                   builder: (ctx) => AlertDialog(
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    title: Center(child:  Text("Caricamento")),
+                    title: const Center(child: Text("Caricamento")),
                     actions: <Widget>[
                       StreamBuilder(
                         stream: bloc.streamtoken,
@@ -118,7 +119,7 @@ secondcolumnobj(context, username, password) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DataScreen(
+                                    builder: (context) => LA(
                                           token: token,
                                         )),
                               );
